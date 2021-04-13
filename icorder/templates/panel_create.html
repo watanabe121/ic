@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    インターコスモス社員専用ページ
+{% endblock %}
+{% block contents %}
+        <div class="container" style="padding: 20px 0">
+        <form action="panel_create/" method="post" enctype="multipart/form-data">
+            <h2>基本情報</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">顧客名</th>
+                    <th scope="col">営業担当</th>
+                    <th scope="col">受注No.</th>
+                    <th scope="col">納期日</th>
+                    <th scope="col">仕上時間</th>
+                    <th scope="col">梱包形態</th>
+                    <th scope="col">納品方法</th>
+                    <th scope="col">データ</th>
+                    <th scope="col">データ場所</th>
+                    <th scope="col">データ詳細</th>
+                    <th scope="col">印刷物</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ form.customer_name }}</td>
+                    <td>{{ form.sales_staff }}</td>
+                    <td>{{ form.order_number }}</td>
+                    <td>{{ form.shipping_day }}</td>
+                    <td>{{ form.shipping_time }}</td>
+                    <td>{{ form.packing_type }}</td>
+                    <td>{{ form.shipping_style }}</td>
+                    <td>{{ form.data }}</td>
+                    <td>{{ form.data_location }}</td>
+                    <td>{{ form.data_details }}</td>
+                    <td>{{ form.output_style }}</td>
+
+                </tr>
+
+                </tbody>
+            </table>
+            {% csrf_token %}
+            <h2>指示内容</h2>
+
+            <div id="panel_area">
+                {% for form in panel_formset.forms %}
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">メディア</th>
+                            <th scope="col">ラミ</th>
+                            <th scope="col">パネル</th>
+                            <th scope="col">縦(mm)</th>
+                            <th scope="col">横(mm)</th>
+                            <th scope="col">枚数</th>
+                            <th scope="col">印刷物の内容</th>
+                            <th scope="col">その他二次加工</th>
+                            <th scope="col">入力日</th>
+                            <th scope="col">削除</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{{ form.media_style }}</td>
+                            <td>{{ form.lami_style }}</td>
+                            <td>{{ form.panel_style }}</td>
+                            <td>{{ form.high_size }}</td>
+                            <td>{{ form.wide_size }}</td>
+                            <td>{{ form.quintity }}</td>
+                            <td>{{ form.print_contents }}</td>
+                            <td>{{ form.second_processing }}</td>
+                            <td>{{ form.created_date }}</td>
+                            <td><input type="checkbox" {{ form.delete }}></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                    <hr>
+                {% endfor %}
+            </div>
+            {{ panel_formset.management_form }}
+
+            <button><a href="javascript:void('__prefix__')" id="add_form">Add Another Form</a></button>
+            <button type="submit" class="btn btn-primary">SUBMIT</button>
+        </form>
+    </div>
+    <script type="text/html" id="panelSet-template">
+    <table class="table">
+        <tbody>
+        <td>
+            <select name="panel_set-__prefix__-media_style" id="id_panel_set-__prefix__-media_style">
+                <option value="合成紙糊無し" selected="合成紙糊無し">合成紙糊無し</option>
+                <option value="厚手コート">厚手コート</option>
+                <option value="フォト用紙 EXCEL グロス">フォト用紙 EXCEL グロス</option>
+                <option value="フォト用紙 EXCEL マット">フォト用紙 EXCEL マット</option>
+                <option value="PVCグレー糊">PVCグレー糊</option>
+                <option value="合成紙 糊無し">合成紙 糊無し</option>
+            </select>
+        </td>
+        <td>
+            <select name="panel_set-__prefix__-lami_style" id="id_panel_set-__prefix__-lami_style">
+                <option value="" selected="">---------</option>
+                <option value="OPPグロス">OPPグロス</option>
+                <option value="OPPマット">OPPマット</option>
+                <option value="超光沢">超光沢</option>
+            </select>
+        </td>
+        <td>
+            <select name="panel_set-__prefix__-panel_style" id="id_panel_set-__prefix__-panel_style">
+                <option value="" selected="">---------</option>
+                <option value="白片面">白片面</option>
+                <option value="黒片面">黒片面</option>
+                <option value="白両面">白両面</option>
+                <option value="黒両面">黒両面</option>
+                <option value="外注">外注</option>
+            </select>
+        </td>
+        <td>
+            <input type="number" name="panel_set-__prefix__-high_size" id="id_panel_set-__prefix__-high_size">
+        </td>
+        <td>
+            <input type="number" name="panel_set-__prefix__-wide_size" id="id_panel_set-__prefix__-wide_size">
+        </td>
+        <td>
+            <input type="number" name="panel_set-__prefix__-quintity" id="id_panel_set-__prefix__-quintity">
+        </td>
+        <td>
+            <input type="text" name="panel_set-__prefix__-print_contents" maxlength="255"
+                   id="id_panel_set-__prefix__-print_contents">
+        </td>
+        <td>
+            <input type="text" name="panel_set-__prefix__-second_processing" maxlength="255"
+                   id="id_panel_set-__prefix__-second_processing">
+        </td>
+        <td>
+            <input type="text" name="panel_set-__prefix__-created_date" value=""
+                   id="id_panel_set-__prefix__-created_date">
+            <input type="hidden" name="initial-panel_set-__prefix__-created_date" value=""
+                   id="initial-panel_set-__prefix__-id_panel_set-__prefix__-created_date">
+        </td>
+        <td>
+            <label for="id_panel_set-__prefix__-DELETE">削除:</label>
+            <input type="checkbox" name="panel_set-__prefix__-DELETE" id="id_panel_set-0-DELETE">
+            <input type="hidden" name="panel_set-__prefix__-target" id="id_panel_set-__prefix__-target">
+            <input type="hidden" name="panel_set-__prefix__-id" id="id_panel_set-__prefix__-id">
+        </td>
+        </tbody>
+    </table>
+        <hr>
+    </script>
+    <script>
+        var value = document.getElementById("id_panel_set-0-created_date").value;
+        alert(value);
+        $('#add_form').click(function () {
+            var formcount = $('#id_panel_set-TOTAL_FORMS');
+            var currentFormCount = parseInt(formcount.val());
+            alert(currentFormCount);
+            var tmplMarkup = $('#panelSet-template').html();
+            var new_form = tmplMarkup.replace(/__prefix__/g, currentFormCount);
+
+            $('#panel_area').append(new_form)
+            var newid = "id_panel_set-" + currentFormCount + "-created_date";
+            var newid2 = "initial-panel_set-" + currentFormCount + "-id_panel_set-" + currentFormCount + "-created_date";
+            document.getElementById(newid).value = value;
+            document.getElementById(newid2).value = value;
+
+            formcount++;
+            $('#id_form-TOTAL_FORMS').val(formcount);
+            $('#id_panel_set-TOTAL_FORMS').attr('value', currentFormCount + 1);
+        });
+    </script>
+{% endblock %}
